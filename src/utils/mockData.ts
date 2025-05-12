@@ -1,215 +1,278 @@
 import { Alert, Transaction, Member, FraudMetrics } from '../types';
 
-// Generate random date within the last 30 days
-const getRandomRecentDate = () => {
-  const date = new Date();
-  date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-  return date.toISOString();
-};
-
-// Generate random amount between min and max
-const getRandomAmount = (min: number, max: number) => {
-  return parseFloat((Math.random() * (max - min) + min).toFixed(2));
-};
-
-// Mock alerts data
-export const mockAlerts: Alert[] = [
-  {
-    id: '1',
-    title: 'Unusual login location detected',
-    description: 'Member logged in from an unusual location (Ukraine) for the first time.',
-    timestamp: getRandomRecentDate(),
-    severity: 'high',
-    isRead: false,
-  },
-  {
-    id: '2',
-    title: 'Multiple failed login attempts',
-    description: 'Five failed login attempts for member #CR-78291 within 10 minutes.',
-    timestamp: getRandomRecentDate(),
-    severity: 'high',
-    isRead: true,
-  },
-  {
-    id: '3',
-    title: 'Large transaction alert',
-    description: 'Transaction of €15,000 exceeds typical spending pattern for member #CR-12345.',
-    timestamp: getRandomRecentDate(),
-    severity: 'medium',
-    isRead: false,
-  },
-  {
-    id: '4',
-    title: 'Rapid succession withdrawals',
-    description: 'Three ATM withdrawals within 30 minutes from different locations.',
-    timestamp: getRandomRecentDate(),
-    severity: 'medium',
-    isRead: false,
-  },
-  {
-    id: '5',
-    title: 'New payee added',
-    description: 'Member #CR-34567 added a new international payee.',
-    timestamp: getRandomRecentDate(),
-    severity: 'low',
-    isRead: true,
-  },
-  {
-    id: '6',
-    title: 'Account details changed',
-    description: 'Member #CR-45678 changed their contact email and phone number.',
-    timestamp: getRandomRecentDate(),
-    severity: 'low',
-    isRead: false,
-  },
-];
-
-// Mock transactions data
-export const mockTransactions: Transaction[] = [
-  {
-    id: 't1',
-    memberId: 'm1',
-    memberName: 'Sean O\'Connor',
-    amount: 5000,
-    date: getRandomRecentDate(),
-    type: 'Transfer',
-    status: 'suspicious',
-    riskScore: 75,
-    description: 'Transfer to new international account',
-  },
-  {
-    id: 't2',
-    memberId: 'm2',
-    memberName: 'Mary Kelly',
-    amount: 1200,
-    date: getRandomRecentDate(),
-    type: 'Withdrawal',
-    status: 'normal',
-    riskScore: 25,
-    description: 'ATM withdrawal',
-  },
-  {
-    id: 't3',
-    memberId: 'm3',
-    memberName: 'Patrick Murphy',
-    amount: 15000,
-    date: getRandomRecentDate(),
-    type: 'Transfer',
-    status: 'flagged',
-    riskScore: 90,
-    description: 'Large transfer to unknown recipient',
-  },
-  {
-    id: 't4',
-    memberId: 'm4',
-    memberName: 'Siobhan Walsh',
-    amount: 750,
-    date: getRandomRecentDate(),
-    type: 'Payment',
-    status: 'normal',
-    riskScore: 15,
-    description: 'Monthly mortgage payment',
-  },
-  {
-    id: 't5',
-    memberId: 'm5',
-    memberName: 'Liam Byrne',
-    amount: 3500,
-    date: getRandomRecentDate(),
-    type: 'Deposit',
-    status: 'suspicious',
-    riskScore: 65,
-    description: 'Cash deposit exceeding typical pattern',
-  },
-  {
-    id: 't6',
-    memberId: 'm1',
-    memberName: 'Sean O\'Connor',
-    amount: 2500,
-    date: getRandomRecentDate(),
-    type: 'Withdrawal',
-    status: 'suspicious',
-    riskScore: 70,
-    description: 'Multiple withdrawals in short period',
-  },
-  {
-    id: 't7',
-    memberId: 'm6',
-    memberName: 'Aoife Doyle',
-    amount: 900,
-    date: getRandomRecentDate(),
-    type: 'Payment',
-    status: 'normal',
-    riskScore: 20,
-    description: 'Utility bill payment',
-  },
-];
-
-// Mock members data
-export const mockMembers: Member[] = [
-  {
-    id: 'm1',
-    name: 'Sean O\'Connor',
-    accountNumber: 'CR-78291',
-    riskScore: 75,
-    joinDate: '2018-05-12T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm1'),
-  },
-  {
-    id: 'm2',
-    name: 'Mary Kelly',
-    accountNumber: 'CR-12345',
-    riskScore: 25,
-    joinDate: '2015-11-23T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm2'),
-  },
-  {
-    id: 'm3',
-    name: 'Patrick Murphy',
-    accountNumber: 'CR-34567',
-    riskScore: 90,
-    joinDate: '2020-02-15T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm3'),
-  },
-  {
-    id: 'm4',
-    name: 'Siobhan Walsh',
-    accountNumber: 'CR-45678',
-    riskScore: 15,
-    joinDate: '2010-07-30T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm4'),
-  },
-  {
-    id: 'm5',
-    name: 'Liam Byrne',
-    accountNumber: 'CR-56789',
-    riskScore: 65,
-    joinDate: '2019-09-05T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm5'),
-  },
-  {
-    id: 'm6',
-    name: 'Aoife Doyle',
-    accountNumber: 'CR-67890',
-    riskScore: 20,
-    joinDate: '2017-03-18T00:00:00Z',
-    lastActivity: getRandomRecentDate(),
-    recentTransactions: mockTransactions.filter(t => t.memberId === 'm6'),
-  },
-];
-
-// Mock fraud metrics
+// Mock Fraud Metrics
 export const mockFraudMetrics: FraudMetrics = {
-  totalAlerts: 24,
+  totalAlerts: 42,
+  alertsThisWeek: 18,
+  alertsLastWeek: 12,
   highRiskAlerts: 8,
   suspiciousTransactions: 15,
-  fraudulentAmount: 42500,
-  riskScoreAverage: 48.3,
-  alertsThisWeek: 12,
-  alertsLastWeek: 9,
+  fraudulentAmount: 12450
 };
+
+// Mock Alerts
+export const mockAlerts: Alert[] = [
+  {
+    id: 'alert-001',
+    title: 'Unusual Login Location',
+    description: 'Member logged in from an unusual location (Dublin) when their normal location is Cork.',
+    severity: 'high',
+    timestamp: '2023-06-15T08:23:15',
+    isRead: false,
+    memberId: 'MEM-1234',
+    transactionId: 'TRX-5678'
+  },
+  {
+    id: 'alert-002',
+    title: 'Multiple Failed Login Attempts',
+    description: 'Five failed login attempts detected for member account in the last 10 minutes.',
+    severity: 'high',
+    timestamp: '2023-06-15T09:45:22',
+    isRead: true,
+    memberId: 'MEM-5678'
+  },
+  {
+    id: 'alert-003',
+    title: 'Large Transaction',
+    description: 'Unusually large transaction of €5,000 detected, which is outside the member\'s normal spending pattern.',
+    severity: 'medium',
+    timestamp: '2023-06-14T14:12:33',
+    isRead: false,
+    memberId: 'MEM-9012',
+    transactionId: 'TRX-3456'
+  },
+  {
+    id: 'alert-004',
+    title: 'Account Information Change',
+    description: 'Member changed their email address and phone number within 24 hours of a large withdrawal.',
+    severity: 'medium',
+    timestamp: '2023-06-14T11:05:47',
+    isRead: true,
+    memberId: 'MEM-3456'
+  },
+  {
+    id: 'alert-005',
+    title: 'Multiple Transactions',
+    description: 'Multiple small transactions totaling €1,200 made within 1 hour.',
+    severity: 'low',
+    timestamp: '2023-06-13T16:30:02',
+    isRead: false,
+    memberId: 'MEM-7890',
+    transactionId: 'TRX-1234'
+  },
+  {
+    id: 'alert-006',
+    title: 'New Device Login',
+    description: 'Member logged in from a new device for the first time.',
+    severity: 'low',
+    timestamp: '2023-06-13T10:15:38',
+    isRead: true,
+    memberId: 'MEM-2345'
+  },
+  {
+    id: 'alert-007',
+    title: 'International Transfer',
+    description: 'First-time international transfer to an account in Eastern Europe.',
+    severity: 'high',
+    timestamp: '2023-06-12T13:45:22',
+    isRead: false,
+    memberId: 'MEM-6789',
+    transactionId: 'TRX-8901'
+  },
+  {
+    id: 'alert-008',
+    title: 'Account Dormancy',
+    description: 'Previously dormant account suddenly active with multiple transactions.',
+    severity: 'medium',
+    timestamp: '2023-06-12T09:20:15',
+    isRead: true,
+    memberId: 'MEM-0123',
+    transactionId: 'TRX-6789'
+  }
+];
+
+// Mock Transactions
+export const mockTransactions: Transaction[] = [
+  {
+    id: 'TRX-5678',
+    memberName: 'John Murphy',
+    memberId: 'MEM-1234',
+    amount: 3500,
+    date: '2023-06-15T08:20:15',
+    type: 'Withdrawal',
+    status: 'flagged',
+    riskScore: 85
+  },
+  {
+    id: 'TRX-3456',
+    memberName: 'Mary O\'Sullivan',
+    memberId: 'MEM-9012',
+    amount: 5000,
+    date: '2023-06-14T14:10:33',
+    type: 'Transfer',
+    status: 'suspicious',
+    riskScore: 72
+  },
+  {
+    id: 'TRX-1234',
+    memberName: 'Patrick Kelly',
+    memberId: 'MEM-7890',
+    amount: 1200,
+    date: '2023-06-13T16:25:02',
+    type: 'Multiple Payments',
+    status: 'suspicious',
+    riskScore: 65
+  },
+  {
+    id: 'TRX-8901',
+    memberName: 'Siobhan Walsh',
+    memberId: 'MEM-6789',
+    amount: 2800,
+    date: '2023-06-12T13:40:22',
+    type: 'International Transfer',
+    status: 'flagged',
+    riskScore: 90
+  },
+  {
+    id: 'TRX-6789',
+    memberName: 'Liam Byrne',
+    memberId: 'MEM-0123',
+    amount: 1500,
+    date: '2023-06-12T09:15:15',
+    type: 'Withdrawal',
+    status: 'suspicious',
+    riskScore: 68
+  },
+  {
+    id: 'TRX-2345',
+    memberName: 'Aoife Ryan',
+    memberId: 'MEM-4567',
+    amount: 750,
+    date: '2023-06-11T11:30:45',
+    type: 'Purchase',
+    status: 'normal',
+    riskScore: 35
+  },
+  {
+    id: 'TRX-7890',
+    memberName: 'Conor Doyle',
+    memberId: 'MEM-8901',
+    amount: 1800,
+    date: '2023-06-10T15:20:10',
+    type: 'Transfer',
+    status: 'normal',
+    riskScore: 42
+  }
+];
+
+// Mock Members
+export const mockMembers: Member[] = [
+  {
+    id: 'MEM-1234',
+    name: 'John Murphy',
+    accountNumber: '3021-4567-8901',
+    email: 'john.murphy@example.com',
+    joinDate: '2018-03-15T00:00:00',
+    lastActivity: '2023-06-15T08:20:15',
+    riskScore: 85
+  },
+  {
+    id: 'MEM-5678',
+    name: 'Sarah O\'Brien',
+    accountNumber: '3021-2345-6789',
+    email: 'sarah.obrien@example.com',
+    joinDate: '2019-07-22T00:00:00',
+    lastActivity: '2023-06-15T09:40:22',
+    riskScore: 78
+  },
+  {
+    id: 'MEM-9012',
+    name: 'Mary O\'Sullivan',
+    accountNumber: '3021-8901-2345',
+    email: 'mary.osullivan@example.com',
+    joinDate: '2017-11-05T00:00:00',
+    lastActivity: '2023-06-14T14:10:33',
+    riskScore: 72
+  },
+  {
+    id: 'MEM-3456',
+    name: 'Michael Collins',
+    accountNumber: '3021-5678-9012',
+    email: 'michael.collins@example.com',
+    joinDate: '2020-02-18T00:00:00',
+    lastActivity: '2023-06-14T11:00:47',
+    riskScore: 65
+  },
+  {
+    id: 'MEM-7890',
+    name: 'Patrick Kelly',
+    accountNumber: '3021-1234-5678',
+    email: 'patrick.kelly@example.com',
+    joinDate: '2016-09-30T00:00:00',
+    lastActivity: '2023-06-13T16:25:02',
+    riskScore: 60
+  },
+  {
+    id: 'MEM-2345',
+    name: 'Emma Fitzgerald',
+    accountNumber: '3021-6789-0123',
+    email: 'emma.fitzgerald@example.com',
+    joinDate: '2021-05-12T00:00:00',
+    lastActivity: '2023-06-13T10:10:38',
+    riskScore: 25
+  },
+  {
+    id: 'MEM-6789',
+    name: 'Siobhan Walsh',
+    accountNumber: '3021-3456-7890',
+    email: 'siobhan.walsh@example.com',
+    joinDate: '2019-01-25T00:00:00',
+    lastActivity: '2023-06-12T13:40:22',
+    riskScore: 90
+  },
+  {
+    id: 'MEM-0123',
+    name: 'Liam Byrne',
+    accountNumber: '3021-9012-3456',
+    email: 'liam.byrne@example.com',
+    joinDate: '2018-08-07T00:00:00',
+    lastActivity: '2023-06-12T09:15:15',
+    riskScore: 68
+  },
+  {
+    id: 'MEM-4567',
+    name: 'Aoife Ryan',
+    accountNumber: '3021-0123-4567',
+    email: 'aoife.ryan@example.com',
+    joinDate: '2020-11-19T00:00:00',
+    lastActivity: '2023-06-11T11:25:45',
+    riskScore: 35
+  },
+  {
+    id: 'MEM-8901',
+    name: 'Conor Doyle',
+    accountNumber: '3021-7890-1234',
+    email: 'conor.doyle@example.com',
+    joinDate: '2017-04-03T00:00:00',
+    lastActivity: '2023-06-10T15:15:10',
+    riskScore: 42
+  },
+  {
+    id: 'MEM-2346',
+    name: 'Niamh McCarthy',
+    accountNumber: '3021-4567-8902',
+    email: 'niamh.mccarthy@example.com',
+    joinDate: '2019-10-28T00:00:00',
+    lastActivity: '2023-06-09T12:30:20',
+    riskScore: 18
+  },
+  {
+    id: 'MEM-6790',
+    name: 'Sean Lynch',
+    accountNumber: '3021-2345-6790',
+    email: 'sean.lynch@example.com',
+    joinDate: '2018-06-14T00:00:00',
+    lastActivity: '2023-06-08T09:45:55',
+    riskScore: 30
+  }
+];
