@@ -8,3 +8,5 @@
 
 "add transaction and reports page"
 
+"please add rules and settings page"
+
