@@ -6,3 +6,5 @@
 
 "add alerts and members page"
 
+"add transaction and reports page"
+
