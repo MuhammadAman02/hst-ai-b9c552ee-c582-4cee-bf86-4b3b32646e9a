@@ -6,7 +6,7 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
- 
+
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
  
@@ -27,7 +27,7 @@
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
- 
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
@@ -75,18 +75,33 @@
   }
 }
 
-.alert-badge {
-  @apply px-2 py-0.5 text-xs font-medium rounded-full;
-}
-
-.alert-badge-high {
-  @apply bg-alert-red-100 text-alert-red-800 dark:bg-alert-red-900 dark:text-alert-red-200;
-}
-
-.alert-badge-medium {
-  @apply bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200;
-}
-
-.alert-badge-low {
-  @apply bg-cu-green-100 text-cu-green-800 dark:bg-cu-green-900 dark:text-cu-green-200;
+@layer components {
+  .alert-badge {
+    @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full;
+  }
+  
+  .alert-badge-high {
+    @apply bg-alert-red-100 text-alert-red-800 dark:bg-alert-red-900/30 dark:text-alert-red-300;
+  }
+  
+  .alert-badge-medium {
+    @apply bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300;
+  }
+  
+  .alert-badge-low {
+    @apply bg-cu-green-100 text-cu-green-800 dark:bg-cu-green-900/30 dark:text-cu-green-300;
+  }
+  
+  @keyframes pulse-alert {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  .animate-pulse-alert {
+    animation: pulse-alert 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
