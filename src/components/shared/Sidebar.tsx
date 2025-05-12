@@ -27,39 +27,39 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
   return (
     <aside 
-      className={`fixed top-0 left-0 z-20 w-64 h-screen pt-16 transition-transform bg-white border-r border-gray-200 ${
+      className={`fixed top-0 left-0 z-20 w-64 h-screen pt-16 transition-transform bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0`}
     >
-      <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
+      <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <div className="space-y-2 mt-4">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.path}
-              className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+              className="flex items-center p-2 text-base font-normal text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <div className="text-gray-500">{item.icon}</div>
+              <div className="text-gray-500 dark:text-gray-400">{item.icon}</div>
               <span className="ml-3">{item.name}</span>
             </Link>
           ))}
         </div>
         
-        <div className="pt-4 mt-4 border-t border-gray-200">
+        <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
           <Link
             to="/logout"
-            className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+            className="flex items-center p-2 text-base font-normal text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <LogOut size={20} className="text-gray-500" />
+            <LogOut size={20} className="text-gray-500 dark:text-gray-400" />
             <span className="ml-3">Logout</span>
           </Link>
         </div>
         
         <div className="absolute bottom-4 left-0 right-0 px-3">
-          <div className="p-4 bg-cu-blue-50 rounded-lg">
-            <h4 className="text-sm font-medium text-cu-blue-800">Need Help?</h4>
-            <p className="text-xs text-cu-blue-600 mt-1">Contact our support team for assistance with fraud detection.</p>
-            <button className="mt-2 text-xs font-medium text-cu-blue-700 hover:text-cu-blue-800">
+          <div className="p-4 bg-cu-blue-50 dark:bg-cu-blue-900 rounded-lg">
+            <h4 className="text-sm font-medium text-cu-blue-800 dark:text-cu-blue-200">Need Help?</h4>
+            <p className="text-xs text-cu-blue-600 dark:text-cu-blue-300 mt-1">Contact our support team for assistance with fraud detection.</p>
+            <button className="mt-2 text-xs font-medium text-cu-blue-700 dark:text-cu-blue-300 hover:text-cu-blue-800 dark:hover:text-cu-blue-200">
               Contact Support
             </button>
           </div>
